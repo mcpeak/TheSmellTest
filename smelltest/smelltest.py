@@ -7,7 +7,7 @@ from core.YaraHandler import YaraHandler
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Bandit - a Python source code security analyzer',
+        description='TheSmellTest - Find insecurity patterns in code',
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
     parser.add_argument('targets', metavar='targets', type=str, nargs='+',
