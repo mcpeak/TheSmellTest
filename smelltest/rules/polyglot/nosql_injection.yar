@@ -4,11 +4,12 @@ rule nosql_injection
     filetype = "any"
     confidence = "low"
     severity = "high"
-    scantype = "line"
+    scantype = "file"
     testID = "A001"
+    name = "NoSQL Injection"
 
   strings:
-    $where_clause = /\$where/
+    $where_clause = /\$where.*\n/
 
   condition:
     $where_clause

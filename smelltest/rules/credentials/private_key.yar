@@ -6,6 +6,7 @@ rule ssh_private_key
     severity = "high"
     scantype = "file"
     testID = "B001"
+    name = "SSH Private Key"
 
 
   strings:

@@ -1,14 +1,7 @@
-import os
+from core import utils
 import yara
 
 RULE_PATH = 'rules'
-
-def _discover_files(path):
-    for entry in os.scandir(path):
-        if entry.is_dir(follow_symlinks=False):
-            yield from _discover_files(entry.path)
-        else:
-            yield entry
 
 def _parse_metadata(yara_file):
     kv = {}
@@ -32,7 +25,7 @@ class YaraHandler():
                    'file': {}
                   }
 
-        for f in _discover_files(RULE_PATH):
+        for f in utils.discover_files(RULE_PATH):
             metadata = _parse_metadata(f.path)
             #TODO - add exclusion logic for specific test IDs
 
@@ -49,8 +42,13 @@ class YaraHandler():
         self._file_rules = yara.compile(filepaths = ruleset['file'])
 
     def match_file(self, f_path):
-        with open(f_path, 'r') as f:
-            return self._file_rules.match(data=f.read())
+        with open(f_path, 'r', encoding='utf-8') as f:
+            try:
+                matches = self._file_rules.match(data=f.read())
+            except UnicodeDecodeError as e:
+                #TODO: is returning None the best thing to do?
+                matches = None
+        return matches
 
     def match_line(self, line):
         return self._line_rules.match(data=line)
