@@ -1,0 +1,39 @@
+import yara
+
+test_private_key = """-----BEGIN RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEA4rYrev35p6JR9bHgaixdjCIdM905AAn8yE8DAjUe8t8aNY3y
+tQa/NuyYsA5hexsqZa4PGzDewYclg0dJS0N8ppzonC9ceRUCUCWYhjQWpnimjUQp
+kSOCQAKXPChzt5RpPWe4hWgNjKJNZ9HnrYQSg5LFrOdlG+knTyOdxchZF0ABxM1n
+RDQl9Q/Ntli9ur+SjCoxLBopwmnYXMZ0k+zX70u/WkgQCLgk35kArWI0JlcrRgyx
+32SbAPjrIFeKtaFfGtoungSa7fjcN8hs1ITSjwdLEfyMOfcmU1vP5Tle7XV+lJvu
+j7hyHtb28z51RiFEAjO5Xz99AHsU4F6Nr+dMWQIDAQABAoIBAAlHHzxnTGI52FTP
+tLljm2hytPM8aGrB/eBMq3jZp6yUyMPMTVRvNEARKqZ50C9ziyaiGugn9dXBrB1V
+O4CjAGTpIvPRVF14KKITB8zmMM8bPOWnFnRkGZ54/KtvlFy87BmhNwHuoi9RLQ3E
+n1CQiRltVj2fMpoTzpIEiR5g9pRm7G084H96YtG7iqJ+5bqlvcrUiP9/oz6UrRCc
+VXZWQ0Qts/yWdeNW6l4VKUQPvu0nSO3MbgnbqhCoQw8theuTWgH4x3cexnIcPmSz
+OAFBXSS35sEeISSoVC8m+A2mZRW6pkDWirptvYcT+ZmEfXBxoOlW/pHF9xg8SZ0q
+zkIUfskCgYEA/XqdbDKPpPHry+MS4iKJbFUA0N/LfxeYL89WvH0TcWlucfy9YvM0
+SNh8Xf8cDmTdDHCTHiSVkpxQzTBW97umEwozyUl7q1nrn8ukcRjY5gPrjm7EVI04
+SW2Mf+4nIdEzxSkQMPbNyNo5CMlkktYS1sqtHNAt27oXeT4UVXW0k5cCgYEA5Pdm
+/F8QhrpfV7pPMMfL9zLuNny8XVS6yLExSX4nU5TabEOJS1x0O8P1kAvpFXF4Az2T
+7+h2diGeaHFg3/8DvJIykmSMOP2+6wIJMJFZ/STgOcWwRSda8M0SxtaTN/G1/Ejq
+qRQBAD3KuklXaCvNY/YOKS46+RIkDUXaZ95NXY8CgYAhZNf8eyTFfEGuWLoSJK6q
+IQC8g99RXRBlrBEnP+sh09wDFGL2+Ed5GVw5HfTaSJt+mg4nuHYkHIfgoG+0r3oP
+pBZyfEXYqz4JjVCavcVFeFq+JwWihgBWXCJYcE2jfOYvIVvKt5kgzu8Yoz+mwKE2
+vvjThPGlsvyIso8HOzyQ/QKBgDZB0iu3s0jZ3UICqkVa8yBu9zf+MvzC2Ug5hP5v
+YI5T1baWAnDTRc/rzcMGr4MfUlsiOm49XeT8bnc9dsFdwtrqogVCwl+28YjrAJZ7
+uyFbna7TA8Q/YTNyxSJNMrGtG3zfIoxSazJNcj7WplnPF2q6ofxsMhlXjSeACBNZ
+AGhNAoGBAL03nNWVIrOGTztXMH0nw6B5TObTgt8mHPK3WwtNTSd1I7AzLupnCR9A
+dKYOA3l7YiDZ5vNP+wEGq0d/qhpPcrzXtxZzpi5FBXTPujewXtaNGT8u/GUiZlw4
+HbmrAr/njZBKWKrQAzLdCfHu2Mo+MXmqy9b21czES3ByvTY9x1LQ
+-----END RSA PRIVATE KEY-----"""
+
+test_where_clause = "$where something=something"
+
+#rules = yara.compile('rules/credentials/private_key.yar')
+rules = yara.compile('rules/polyglot/nosql_injection.yar')
+#matches = rules.match(data=test_private_key)
+matches = rules.match(data=test_where_clause)
+
+for match in matches:
+    print match.strings
