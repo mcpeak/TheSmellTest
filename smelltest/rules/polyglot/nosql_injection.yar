@@ -8,7 +8,7 @@ rule nosql_injection
     testID = "A001"
 
   strings:
-    $where_clause = "$where"
+    $where_clause = /\$where/
 
   condition:
     $where_clause

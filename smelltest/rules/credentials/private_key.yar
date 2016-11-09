@@ -4,6 +4,9 @@ rule ssh_private_key
     filetype = "any"
     confidence = "high"
     severity = "high"
+    scantype = "file"
+    testID = "B001"
+
 
   strings:
     // begin private key marker, base64, end private key marker
